@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Query, Param, Res, Req, HttpCode, H
 import { TesteService } from './teste.service'; //PRECISA IMPORTAR PARA PODER USAR AS FUNÇÕES DE IMPLEMENTAÇÃO!!!
 import { CreateTesteDto } from './dto/create-teste.dto';
 import { UpdateTesteDto } from './dto/update-teste.dto';
-import { Request, response } from 'express';
+import { Request, Response } from 'express';
 import { Observable, of } from 'rxjs';
 
 @Controller('teste') //necessário para definir um controlador básico.
@@ -14,8 +14,8 @@ export class TesteController {
 
   ////////////////////////////////////GET///////////////////////////////////////////////
   /*@Get('teste1')
-  findOne(@Res() response){
-    return response.status(200).send();
+  findOne(@Res() res: Response){
+    return res.status(200).send();
   } //coloca o Nest no modo específico da biblioteca para esse manipulador e se torna responsável por gerenciar a resposta. Ao fazer isso, você deve emitir algum tipo de resposta fazendo uma chamada no response objeto (por exemplo, res.json(...)ou res.send(...)), ou o servidor HTTP travará.*/
 
   /*@Get('teste2')
@@ -35,7 +35,7 @@ export class TesteController {
   @Header('control', 'none')
   //pode-se usar @Req e @Res como parâmetro do create do post
   create(): string{
-    //console.log(response.header)
+    //console.log(res.header)
     return "adiciona nova conta";
   }*/
 
@@ -43,14 +43,14 @@ export class TesteController {
 
   /*@Get('teste4') 
   @Redirect() //decorator para redirecionamento
-  findOne(@Res() response){
+  findOne(@Res() res: Response){
     return response.redirect('https://nestjs.com', 301); //aqui que redireciona!!!
   }*/
 
   /////////////////////////////REDIRECIONAMENTO DINÂMICO//////////////////////////////////
   @Redirect()
   @Get('teste5')
-  index(@Res() response) {
+  index(@Res({passthrough: true}) res: Response) {
 
     interface RedirectOptions {
       url?: string;
@@ -66,7 +66,7 @@ export class TesteController {
     const status = createRedirect({ url: "https://github.com/liviafort"});
     console.log(status);
     //use o status 301!!!
-    return response.redirect(status.url, status.statusCode);
+    return res.redirect(status.url, status.statusCode);
   }
 
   ////////////////////////////////PARÂMETROS DE ROTAS///////////////////////////////////////
