@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus, HostParam} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus, HostParam} from '@nestjs/common';
 import { TesteService } from './teste.service'; //PRECISA IMPORTAR PARA PODER USAR AS FUNÇÕES DE IMPLEMENTAÇÃO!!!
 import { CreateTesteDto } from './dto/create-teste.dto';
 import { UpdateTesteDto } from './dto/update-teste.dto';
 import { Request, response } from 'express';
-import { getMaxListeners } from 'process';
+import { Observable, of } from 'rxjs';
 
 @Controller('teste') //necessário para definir um controlador básico.
 export class TesteController {
@@ -18,10 +18,11 @@ export class TesteController {
     return response.status(200).send();
   } //coloca o Nest no modo específico da biblioteca para esse manipulador e se torna responsável por gerenciar a resposta. Ao fazer isso, você deve emitir algum tipo de resposta fazendo uma chamada no response objeto (por exemplo, res.json(...)ou res.send(...)), ou o servidor HTTP travará.*/
 
-  @Get('teste2')
+  /*@Get('teste2')
   findAll(@Req() resquest: Request): string {
     return this.testeService.getName(); //função criada em serviços
-  }
+  }*/
+
   /*@Get('teste3')
   findOne() {
     return this.testeService.findAll(); //método retornará um código de status 200 e a resposta associada
@@ -29,14 +30,15 @@ export class TesteController {
 
   ////////////////////////////////////POST///////////////////////////////////////////////
 
-  @Post('teste4')
+  /*@Post('teste4')
   @HttpCode(204) //altera código de status (facilmente)
   @Header('control', 'none')
   //pode-se usar @Req e @Res como parâmetro do create do post
   create(): string{
     //console.log(response.header)
     return "adiciona nova conta";
-  }
+  }*/
+
   /////////////////////////////REDIRECIONAMENTO ESTÁTICO//////////////////////////////////
 
   /*@Get('teste4') 
@@ -87,13 +89,31 @@ export class TesteController {
   getInfo(@HostParam('account') account: string) {
     return account;
   }
-  ///////////////////////////////////////ESCOPOS///////////////////////////////////////////
-  //-----> apenas em fundamentos
+  ///////////////////////////////////////ASSINCRONIA///////////////////////////////////////////
+  //Toda função assíncrona deve retornar um arquivo Promise. Isso significa que você pode retornar um valor diferido que o Nest poderá resolver sozinho.
 
-  
-  /*@Post('testeGet')
+  /*@Get('teste6')
+  async findAll(): Promise<any[]> {
+    return [];
+  }*/
+ 
+  /*@Get('teste7')
+  findAll(): Observable<any[]> {
+    return of([]);
+  }*/
+
+  /////////////////////////////////SOLICITAR CARGAS//////////////////////////////////
+  //-------------> Um DTO é um objeto que define como os dados serão enviados pela rede.
+
+  @Post('testeGet')
   create(@Body() createTesteDto: CreateTesteDto) {
     return this.testeService.create(createTesteDto);
+  }
+
+  /*
+  @Get()
+  findAll(@Query() query: ListAllEntities) {
+    return `This action returns all cats (limit: ${query.limit} items)`;
   }
 
   @Get(':id')
