@@ -7,6 +7,7 @@ import { Teste } from './interfaces/teste.interface';
 export class TesteService {
 
   private readonly testes: Teste[] = [] //essa abreviação nos permite declarar e inicializar o testeService membro imediatamente no mesmo local.
+  //não funciona ----> constructor(private testes: Teste) {}
 
   create(teste: Teste) {
     this.testes.push(teste);
