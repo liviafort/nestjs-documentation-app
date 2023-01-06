@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Query, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus, HostParam} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus, HostParam, Delete} from '@nestjs/common';
 import { TesteService } from './teste.service'; //PRECISA IMPORTAR PARA PODER USAR AS FUNÇÕES DE IMPLEMENTAÇÃO!!!
 import { CreateTesteDto } from './dto/create-teste.dto';
 import { UpdateTesteDto } from './dto/update-teste.dto';
 import { Request, Response } from 'express';
 import { Observable, of } from 'rxjs';
+import { Teste } from './interfaces/teste.interface';
 
 @Controller('teste') //necessário para definir um controlador básico.
 export class TesteController {
@@ -37,7 +38,7 @@ export class TesteController {
   create(): string{
     //console.log(res.header)
     return "adiciona nova conta";
-  }*/
+  }
 
   /////////////////////////////REDIRECIONAMENTO ESTÁTICO//////////////////////////////////
 
@@ -45,7 +46,7 @@ export class TesteController {
   @Redirect() //decorator para redirecionamento
   findOne(@Res() res: Response){
     return response.redirect('https://nestjs.com', 301); //aqui que redireciona!!!
-  }*/
+  }
 
   /////////////////////////////REDIRECIONAMENTO DINÂMICO//////////////////////////////////
   @Redirect()
@@ -81,7 +82,7 @@ export class TesteController {
   /*@Get(':id')
   findOne(@Param('id') id: string): string{
     return id;
-  }*/
+  }
 
   /////////////////////////////ROTEAMENTOS DE SUBDOMINIOS //////////////////////////////////
   //-------> não entendi muito bem o host
@@ -92,10 +93,10 @@ export class TesteController {
   ///////////////////////////////////////ASSINCRONIA///////////////////////////////////////////
   //Toda função assíncrona deve retornar um arquivo Promise. Isso significa que você pode retornar um valor diferido que o Nest poderá resolver sozinho.
 
-  /*@Get('teste6')
+  @Get('teste6')
   async findAll(): Promise<any[]> {
     return [];
-  }*/
+  }
  
   /*@Get('teste7')
   findAll(): Observable<any[]> {
@@ -110,10 +111,9 @@ export class TesteController {
     return this.testeService.create(createTesteDto);
   }
 
-  /*
   @Get()
-  findAll(@Query() query: ListAllEntities) {
-    return `This action returns all cats (limit: ${query.limit} items)`;
+  async findAll(): Promise<Teste[]>{
+    return this.testeService.findAll();
   }
 
   @Get(':id')
@@ -129,5 +129,5 @@ export class TesteController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.testeService.remove(+id);
-  }*/
+  }
 }

@@ -1,20 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTesteDto } from './dto/create-teste.dto';
 import { UpdateTesteDto } from './dto/update-teste.dto';
+import { Teste } from './interfaces/teste.interface';
 
 @Injectable()
 export class TesteService {
 
-  getName(): string{
-    return "LIVIAAAAAAA";
-  }
-  
-  create(createTesteDto: CreateTesteDto) {
-    return 'This action adds a new teste';
+  private readonly testes: Teste[] = [] //essa abreviação nos permite declarar e inicializar o testeService membro imediatamente no mesmo local.
+
+  create(teste: Teste) {
+    this.testes.push(teste);
   }
 
-  findAll() {
-    return `This action returns all teste`;
+  findAll(): Teste[] {
+    return this.testes;
   }
 
   findOne(id: number) {
@@ -27,5 +26,9 @@ export class TesteService {
 
   remove(id: number) {
     return `This action removes a #${id} teste`;
+  }
+
+  getName(): string{
+    return "LIVIAAAAAAA";
   }
 }
