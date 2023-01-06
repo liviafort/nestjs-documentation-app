@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus, HostParam} from '@nestjs/common';
 import { TesteService } from './teste.service'; //PRECISA IMPORTAR PARA PODER USAR AS FUNÇÕES DE IMPLEMENTAÇÃO!!!
 import { CreateTesteDto } from './dto/create-teste.dto';
 import { UpdateTesteDto } from './dto/update-teste.dto';
 import { Request, response } from 'express';
+import { getMaxListeners } from 'process';
 
 @Controller('teste') //necessário para definir um controlador básico.
 export class TesteController {
@@ -66,22 +67,30 @@ export class TesteController {
     return response.redirect(status.url, status.statusCode);
   }
 
-  /////////////////////////////PARÂMETROS DE ROTAS//////////////////////////////////
+  ////////////////////////////////PARÂMETROS DE ROTAS///////////////////////////////////////
 
-  /*@Get(':id')
+  @Get('user/:id')
   findOne(@Param() params): string {
   console.log(params.id); //podemos acessar o id parâmetro referenciando
   return `RETORNO DO ID: #${params.id} CONTA`;
-  }*/
-
-  //também pode passar um token de parâmetro específico para o decorador e, em seguida, fazer referência ao parâmetro de rota diretamente pelo nome no corpo do método.
-
-  @Get(':id')
-  findOne(@Param('id') id: string): string{
-    return id;
   }
 
+  //também pode passar um token de parâmetro específico para o decorador e, em seguida, fazer referência ao parâmetro de rota diretamente pelo nome no corpo do método.
+  /*@Get(':id')
+  findOne(@Param('id') id: string): string{
+    return id;
+  }*/
+
   /////////////////////////////ROTEAMENTOS DE SUBDOMINIOS //////////////////////////////////
+  //-------> não entendi muito bem o host
+  @Get('user')
+  getInfo(@HostParam('account') account: string) {
+    return account;
+  }
+  ///////////////////////////////////////ESCOPOS///////////////////////////////////////////
+  //-----> apenas em fundamentos
+
+  
   /*@Post('testeGet')
   create(@Body() createTesteDto: CreateTesteDto) {
     return this.testeService.create(createTesteDto);
