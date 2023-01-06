@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus } from '@nestjs/common';
-import { TesteService } from './teste.service';
+import { TesteService } from './teste.service'; //PRECISA IMPORTAR PARA PODER USAR AS FUNÇÕES DE IMPLEMENTAÇÃO!!!
 import { CreateTesteDto } from './dto/create-teste.dto';
 import { UpdateTesteDto } from './dto/update-teste.dto';
 import { Request, response } from 'express';
@@ -9,6 +9,8 @@ export class TesteController {
   constructor(private readonly testeService: TesteService) {
   }
 
+  //PARTE DO CÓDIGO ESTÁ COMENTANDO POR CAUSA DO USO DAS FUNÇÕES
+
   ////////////////////////////////////GET///////////////////////////////////////////////
   /*@Get('teste1')
   findOne(@Res() response){
@@ -17,7 +19,7 @@ export class TesteController {
 
   @Get('teste2')
   findAll(@Req() resquest: Request): string {
-    return "Foi"
+    return this.testeService.getName(); //função criada em serviços
   }
   /*@Get('teste3')
   findOne() {
@@ -36,11 +38,11 @@ export class TesteController {
   }
   /////////////////////////////REDIRECIONAMENTO ESTÁTICO//////////////////////////////////
 
-  @Get('teste4') 
+  /*@Get('teste4') 
   @Redirect() //decorator para redirecionamento
   findOne(@Res() response){
     return response.redirect('https://nestjs.com', 301); //aqui que redireciona!!!
-  }
+  }*/
 
   /////////////////////////////REDIRECIONAMENTO DINÂMICO//////////////////////////////////
   @Redirect()
@@ -64,6 +66,22 @@ export class TesteController {
     return response.redirect(status.url, status.statusCode);
   }
 
+  /////////////////////////////PARÂMETROS DE ROTAS//////////////////////////////////
+
+  /*@Get(':id')
+  findOne(@Param() params): string {
+  console.log(params.id); //podemos acessar o id parâmetro referenciando
+  return `RETORNO DO ID: #${params.id} CONTA`;
+  }*/
+
+  //também pode passar um token de parâmetro específico para o decorador e, em seguida, fazer referência ao parâmetro de rota diretamente pelo nome no corpo do método.
+
+  @Get(':id')
+  findOne(@Param('id') id: string): string{
+    return id;
+  }
+
+  /////////////////////////////ROTEAMENTOS DE SUBDOMINIOS //////////////////////////////////
   /*@Post('testeGet')
   create(@Body() createTesteDto: CreateTesteDto) {
     return this.testeService.create(createTesteDto);

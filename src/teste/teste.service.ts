@@ -4,6 +4,11 @@ import { UpdateTesteDto } from './dto/update-teste.dto';
 
 @Injectable()
 export class TesteService {
+
+  getName(): string{
+    return "LIVIAAAAAAA";
+  }
+  
   create(createTesteDto: CreateTesteDto) {
     return 'This action adds a new teste';
   }
