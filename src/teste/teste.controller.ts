@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Res, Req, HttpCode, Header, Redirect } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Res, Req, HttpCode, Header, Redirect, HttpStatus } from '@nestjs/common';
 import { TesteService } from './teste.service';
 import { CreateTesteDto } from './dto/create-teste.dto';
 import { UpdateTesteDto } from './dto/update-teste.dto';
@@ -6,7 +6,8 @@ import { Request, response } from 'express';
 
 @Controller('teste') //necessário para definir um controlador básico.
 export class TesteController {
-  constructor(private readonly testeService: TesteService) {}
+  constructor(private readonly testeService: TesteService) {
+  }
 
   ////////////////////////////////////GET///////////////////////////////////////////////
   /*@Get('teste1')
@@ -35,13 +36,33 @@ export class TesteController {
   }
   /////////////////////////////REDIRECIONAMENTO ESTÁTICO//////////////////////////////////
 
-  @Get('teste4')
-  @Redirect()
+  @Get('teste4') 
+  @Redirect() //decorator para redirecionamento
   findOne(@Res() response){
-    return response.redirect('https://nestjs.com', 301);
+    return response.redirect('https://nestjs.com', 301); //aqui que redireciona!!!
   }
 
   /////////////////////////////REDIRECIONAMENTO DINÂMICO//////////////////////////////////
+  @Redirect()
+  @Get('teste5')
+  index(@Res() response) {
+
+    interface RedirectOptions {
+      url?: string;
+      statusCode?: number;
+    }
+
+    function createRedirect(config: RedirectOptions): { url: string; statusCode: number } {
+      let newRedirect = { url: config.url, statusCode: 301 };
+      //use um if aqui para mudar de acordo com condição
+      return newRedirect;
+    }
+
+    const status = createRedirect({ url: "https://github.com/liviafort"});
+    console.log(status);
+    //use o status 301!!!
+    return response.redirect(status.url, status.statusCode);
+  }
 
   /*@Post('testeGet')
   create(@Body() createTesteDto: CreateTesteDto) {
